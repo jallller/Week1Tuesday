@@ -142,8 +142,8 @@ public abstract class Main {
     //Find the three oldest employees.
     public static List<Employees> getThreeOldestEmployees(List<Employees> employees, int n){
         return employees.stream()
-                .sorted((e1, e2) -> Integer.compare(e2.getAge(), e1.getAge()))  // Sort by age in descending order
-                .limit(n)                                                      // Get the top 'n' employees
+                .sorted((e1, e2) -> Integer.compare(e2.getAge(), e1.getAge()))
+                .limit(n)
                 .toList();
     }
 
