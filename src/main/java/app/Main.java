@@ -1,5 +1,8 @@
 package app;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -76,7 +79,6 @@ public abstract class Main {
         // Sample dataset of employees
         List<Employees> employees = new ArrayList<>();
 
-        employees.add(new Employees("Alice", 30, "HR", 55000));
         employees.add(new Employees("Bob", 24, "IT", 62000));
         employees.add(new Employees("Charlie", 29, "Finance", 75000));
         employees.add(new Employees("David", 35, "IT", 82000));
@@ -88,31 +90,61 @@ public abstract class Main {
         employees.forEach(System.out::println);
 
 
-        //Calculate the average age of all employees.
+        // Sample dataset of employees
+        List<Employees2> employees2 = new ArrayList<>();
 
-        avgAge(employees);
-
-        //Find the employee with the highest salary.
-        highestSalary(employees);
-
-        //Group employees by department and calculate the average salary for each department.
-
-        groupByDepAvgSalary(employees);
-
-        //Count the number of employees in each department.
-        countNumberOfEmployees(employees);
-
-        //Find the three oldest employees.
-        getThreeOldestEmployees(employees,3);
+        // Create a list of Employee objects using the specified format
+        employees2.add(new Employees2("Alice", 30, "HR", 55000, LocalDateTime.of(2023, 8, 10, 12, 0)));
+        employees2.add(new Employees2("Bob", 40, "IT", 60000, LocalDateTime.of(2021, 9, 15, 9, 30)));
+        employees2.add(new Employees2("Charlie", 35, "Finance", 70000, LocalDateTime.of(2020, 5, 20, 11, 0)));
+        employees2.add(new Employees2("David", 45, "Marketing", 65000, LocalDateTime.of(2019, 3, 12, 14, 0)));
+        employees2.add(new Employees2("Eva", 28, "Sales", 48000, LocalDateTime.of(2022, 1, 8, 8, 15)));
+        employees2.add(new Employees2("Frank", 55, "HR", 72000, LocalDateTime.of(2018, 11, 22, 10, 30)));
+        employees2.add(new Employees2("Grace", 50, "IT", 80000, LocalDateTime.of(2021, 6, 5, 13, 45)));
+        employees2.add(new Employees2("Hannah", 38, "Finance", 62000, LocalDateTime.of(2020, 4, 25, 15, 0)));
 
 
-        //Filter and display employees whose salary is above a certain threshold.
-//        filterDisplayEmpSalaryAbove(employees);
+        // Print the employees to check the data
+        employees2.forEach(System.out::println);
+
+        //Calculate the age of each employee based on their birthdate
+        calculateAgeBday(employees2);
+        //Calculate the average age of all employees
+        avgAgeEmployees(employees2);
+        //Filter and display employees who have birthdays in a specific month.
+        filterDisplayBdayByMonth(employees2,4);
+        //Group employees by birth month and display the count of employees in each group.
+        employeesNumberOfMonth(employees2);
+        //List all employees who has a birthday in the current month.
+        employeesNumberInCurrentMonth(employees2);
 
 
-        //Sort by different critia
-        sortByName(employees);
-        sortByAgeDesc(employees);
+
+//        //Calculate the average age of all employees.
+//
+//        avgAge(employees);
+//
+//        //Find the employee with the highest salary.
+//        highestSalary(employees);
+//
+//        //Group employees by department and calculate the average salary for each department.
+//
+//        groupByDepAvgSalary(employees);
+//
+//        //Count the number of employees in each department.
+//        countNumberOfEmployees(employees);
+//
+//        //Find the three oldest employees.
+//        getThreeOldestEmployees(employees,3);
+//
+//
+//        //Filter and display employees whose salary is above a certain threshold.
+////        filterDisplayEmpSalaryAbove(employees);
+//
+//
+//        //Sort by different critia
+//        sortByName(employees);
+//        sortByAgeDesc(employees);
 
 
 
@@ -130,17 +162,80 @@ public abstract class Main {
 
     }
 
+    //List all employees who has a birthday in the current month.
+    public static void employeesNumberInCurrentMonth(List<Employees2> employees2) {
+        // Get the current month
+        int currentMonth = LocalDateTime.now().getMonthValue();
+
+        long count = employees2.stream()
+                .filter(employee -> employee.getBirthday().getMonthValue() == currentMonth) // current month
+                .count(); // number the number of employees in the current month
+
+        System.out.println(" number the number of employees in the current month (Month " + currentMonth + "): " + count);
+    }
+
+    //Group employees by birth month and display the count of employees in each group.
+
+    public static void employeesNumberOfMonth(List<Employees2> employees2) {
+        Map<Month, Long> employeesByMonth = employees2.stream()
+                .collect(Collectors.groupingBy(
+                        employee -> employee.getBirthday().getMonth(),
+                        Collectors.counting()
+                ));
+
+        // Print the count of employees in each month
+        employeesByMonth.forEach((month, count) ->
+                System.out.println("Month: " + month + ", Number of employees i : " + count));
+
+    }
     //Filter and display employees whose salary is above a certain threshold.
 
-    public List<Employees> filterDisplayEmpSalaryAbove(List<Employees> employees, double threshold) {
-        return employees.stream()
-                .filter(employee -> employee.getSalary() > threshold)
-                .toList();
+//    public List<Employees> filterDisplayEmpSalaryAbove(List<Employees> employees, double threshold) {
+//        return employees.stream()
+//                .filter(employee -> employee.getSalary() > threshold)
+//                .toList();
+//    }
+
+    //Filter and display employees who have birthdays in a specific month.
+    public static void filterDisplayBdayByMonth(List<Employees2> employees2, int month) {
+        // Get the month name using Month enum
+        Month monthEnum = Month.of(month);
+        System.out.println("\nPeople with birthdays in " + monthEnum + ":");
+
+        employees2.stream()
+                .filter(employee -> employee.getBirthday().getMonthValue() == month) // Check if the month matches
+                .forEach(System.out::println); // Print each employee
+    }
+
+    //Filter and display books published after a specific year.
+    public static void booksPublishedAfter(int year, List<Book> books) {
+        System.out.println("\nBooks published after " + year + ":");
+        books.stream()
+                .filter(book -> book.getPublicationYear() > year)
+                .forEach(System.out::println);
+    }
+
+    //Calculate the age of each employee based on their birthdate
+    public static void calculateAgeBday(List<Employees2> employees2) {
+        System.out.println("\nAges : :");
+        for (Employees2 employee : employees2) {
+            int age = employee.calculateAge();
+            System.out.println(employee.getName() + ": Age: " + age);
+        }
+
     }
 
 
+    //Calculate the average age of all employees
+    public static void avgAgeEmployees(List<Employees2> employees2) {
+        double avgAge = employees2.stream()
+                .collect(Collectors.averagingInt(Employees2::calculateAge)); //in emplooyee 2
+        System.out.println("Average age: " + avgAge);
+    }
+
     //Find the three oldest employees.
     public static List<Employees> getThreeOldestEmployees(List<Employees> employees, int n){
+        System.out.println("Start");
         return employees.stream()
                 .sorted((e1, e2) -> Integer.compare(e2.getAge(), e1.getAge()))
                 .limit(n)
@@ -315,5 +410,9 @@ public abstract class Main {
     }*/
 
 
+
+    //Combine multiple streams or operations.
+    //Transform data, such as calculating bonuses based on employee performance.
+    //Handle cases where some attributes might be missing (use Optional to handle null values).
 
 }

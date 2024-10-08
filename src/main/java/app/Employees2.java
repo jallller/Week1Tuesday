@@ -1,18 +1,24 @@
 package app;
 
-public class Employees  {
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+
+public class Employees2 {
     private String name;
     private int age;
     private String department;
     private double salary;
+    private LocalDateTime birthday;
 
     @Override
     public String toString() {
-        return "Employees{" +
+        return "Employees2{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
                 ", department='" + department + '\'' +
                 ", salary=" + salary +
+                ", birthday=" + birthday +
                 '}';
     }
 
@@ -48,13 +54,24 @@ public class Employees  {
         this.salary = salary;
     }
 
-    public Employees() {
+    public LocalDateTime getBirthday() {
+        return birthday;
     }
 
-    public Employees(String name, int age, String department, double salary) {
+    public void setBirthday(LocalDateTime birthday) {
+        this.birthday = birthday;
+    }
+
+    public Employees2(String name, int age, String department, double salary, LocalDateTime birthday) {
         this.name = name;
         this.age = age;
         this.department = department;
         this.salary = salary;
+        this.birthday = birthday;
+    }
+
+    public int calculateAge() {
+        LocalDateTime now = LocalDateTime.now();
+        return Period.between(birthday.toLocalDate(), now.toLocalDate()).getYears();
     }
 }
