@@ -3,6 +3,7 @@ package app;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class Main {
@@ -56,7 +57,7 @@ public abstract class Main {
 */
 
 
-        List<Transaction> transactions = new ArrayList<>();
+/*        List<Transaction> transactions = new ArrayList<>();
 
         transactions.add(new Transaction(1, 150.75, "USD"));
         transactions.add(new Transaction(2, 200.00, "EUR"));
@@ -70,10 +71,52 @@ public abstract class Main {
         // Print the sample transactions
         for (Transaction transaction : transactions) {
             System.out.println(transaction);
-        }
+        }*/
+
+        // Sample dataset of employees
+        List<Employees> employees = new ArrayList<>();
+
+        employees.add(new Employees("Alice", 30, "HR", 55000));
+        employees.add(new Employees("Bob", 24, "IT", 62000));
+        employees.add(new Employees("Charlie", 29, "Finance", 75000));
+        employees.add(new Employees("David", 35, "IT", 82000));
+        employees.add(new Employees("Eve", 40, "HR", 67000));
+        employees.add(new Employees("Frank", 28, "Finance", 58000));
+        employees.add(new Employees("Grace", 45, "IT", 95000));
+
+        // Print the employees to check the data
+        employees.forEach(System.out::println);
 
 
-        //Calculate the total sum of all transaction amounts
+        //Calculate the average age of all employees.
+
+        avgAge(employees);
+
+        //Find the employee with the highest salary.
+        highestSalary(employees);
+
+        //Group employees by department and calculate the average salary for each department.
+
+        groupByDepAvgSalary(employees);
+
+        //Count the number of employees in each department.
+        countNumberOfEmployees(employees);
+
+        //Find the three oldest employees.
+
+
+
+        //Filter and display employees whose salary is above a certain threshold.
+
+
+
+        //Sort by different critia
+        sortByName(employees);
+        sortByAgeDesc(employees);
+
+
+
+/*        //Calculate the total sum of all transaction amounts
         totalSumTransactionAmount(transactions);
 
         //Group transactions by currency and calculate the sum of amounts for each currency.
@@ -83,9 +126,63 @@ public abstract class Main {
         highestTransaction(transactions);
 
         //Find the average transaction amount.
-        avgTransactionAmount(transactions);
+        avgTransactionAmount(transactions);*/
 
     }
+
+    //Sort by different critia
+
+    public static void sortByName(List<Employees> employees) {
+        employees.stream()
+                .sorted(Comparator.comparing(Employees::getName))
+                .forEach(System.out::println);
+
+    }
+    public static void sortByAgeDesc(List<Employees> employees) {
+        employees.stream()
+                .sorted(Comparator.comparing(Employees::getAge).reversed())
+                .forEach(System.out::println);
+
+    }
+
+
+
+    //Count the number of employees in each department.
+    public static void countNumberOfEmployees(List<Employees> employees) {
+        Map<String, Long> countDep = employees.stream()
+                .collect(Collectors.groupingBy(     // Group employees by department
+                        Employees::getDepartment,    // Key: department
+                        Collectors.counting()       // Value: number of employees in each department
+                ));
+        countDep.forEach((department, count) ->
+                System.out.println("Department : " + department + ", Number of employees: " + count));
+    }
+
+    //Group employees by department and calculate the average salary for each department.
+    public static void groupByDepAvgSalary(List<Employees> employees) {
+        employees.stream()
+                .collect(Collectors.groupingBy(
+                        Employees::getDepartment,
+                        Collectors.averagingDouble(Employees::getSalary)
+                ))
+                .forEach((emplooye, avgSalary) ->
+                        System.out.println("Employee: " + emplooye + ", avg salary: " + avgSalary));
+    }
+
+
+    public static void highestSalary(List<Employees> employees) {
+        employees.stream()
+                .max(Comparator.comparing(Employees::getSalary))
+                .ifPresent(transaction -> System.out.println("Highest salary: " + transaction.getSalary()));
+    }
+
+    public static void avgAge(List<Employees> employees){
+        Double avgAge = employees.stream()
+                .collect(Collectors.averagingInt(Employees::getAge));  // Calculate the average rating
+
+        System.out.println("Avg age : " + avgAge);
+    }
+
 
 
     //Calculate the total sum of all transaction amounts
@@ -139,8 +236,6 @@ public abstract class Main {
                 .forEach((auther, avgRating) ->
                         System.out.println("Auther: " + auther + ", avg rating: " + avgRating));
     }
-
-
 
 
 
@@ -199,6 +294,7 @@ public abstract class Main {
 
         System.out.println("Avg rating all : " + avgRating);
     }*/
+
 
 
 }
