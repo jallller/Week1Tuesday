@@ -103,11 +103,11 @@ public abstract class Main {
         countNumberOfEmployees(employees);
 
         //Find the three oldest employees.
-
+        getThreeOldestEmployees(employees,3);
 
 
         //Filter and display employees whose salary is above a certain threshold.
-
+//        filterDisplayEmpSalaryAbove(employees);
 
 
         //Sort by different critia
@@ -129,6 +129,25 @@ public abstract class Main {
         avgTransactionAmount(transactions);*/
 
     }
+
+    //Filter and display employees whose salary is above a certain threshold.
+
+    public List<Employees> filterDisplayEmpSalaryAbove(List<Employees> employees, double threshold) {
+        return employees.stream()
+                .filter(employee -> employee.getSalary() > threshold)
+                .toList();
+    }
+
+
+    //Find the three oldest employees.
+    public static List<Employees> getThreeOldestEmployees(List<Employees> employees, int n){
+        return employees.stream()
+                .sorted((e1, e2) -> Integer.compare(e2.getAge(), e1.getAge()))  // Sort by age in descending order
+                .limit(n)                                                      // Get the top 'n' employees
+                .toList();
+    }
+
+
 
     //Sort by different critia
 
