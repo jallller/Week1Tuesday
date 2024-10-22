@@ -152,7 +152,7 @@ public abstract class Main {
         totalSumTransactionAmount(transactions);
 
         //Group transactions by currency and calculate the sum of amounts for each currency.
-        groupSumCurAmounts(transactions);
+//        groupSumCurAmounts(transactions);
 
         //Find the highest transaction amount.
         highestTransaction(transactions);
@@ -222,7 +222,6 @@ public abstract class Main {
             int age = employee.calculateAge();
             System.out.println(employee.getName() + ": Age: " + age);
         }
-
     }
 
 
